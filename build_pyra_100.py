@@ -77,17 +77,19 @@ def main(argv):
 # Change origin, corner, and growth vectors below
 # 
 ####################################################################################################
-
+    # change origin, plane_growth_vector1, plane_growth_vector2
     origin = np.array([0.,0.,0.])
-    corner = np.array([0.,0.,0.])
+    corner = origin
     plane_growth_vector1 = np.array([2.0*np.sqrt(2.0),0.,0.])*r
     plane_growth_vector2 = np.array([np.sqrt(2.0),np.sqrt(2.0),0.])*r
     
     #this vector should be (plane_growth_vector1+0.5*plane_growth_vector2)+[0,0,sqrt(2)]*r. Check this!
-    layer_growth_vector1 = np.array([2.0*np.sqrt(2.0),np.sqrt(2.0),np.sqrt(2.0)])*r
+#     layer_growth_vector1 = np.array([2.0*np.sqrt(2.0),np.sqrt(2.0),np.sqrt(2.0)])*r
+    layer_growth_vector1 = (plane_growth_vector1+plane_growth_vector2*2.0)*0.5+[0,0,np.sqrt(2)]*r
     
     #this vector should be [lane_gorwth_vector2*0.5+[0,0,sqrt(2)]*r. Check this!
-    layer_growth_vector2 = np.array([0.,np.sqrt(2.0),np.sqrt(2.0)])*r
+#     layer_growth_vector2 = np.array([0.,np.sqrt(2.0),np.sqrt(2.0)])*r
+    layer_growth_vector2 = plane_growth_vector2-0.5*plane_growth_vector1+[0,0,np.sqrt(2)]*r
     
 ####################################################################################################
 # 
