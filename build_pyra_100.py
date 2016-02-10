@@ -89,7 +89,7 @@ def main(argv):
 ####################################################################################################
     # change origin, plane_growth_vector1, plane_growth_vector2
     origin = np.array([-width,0.,0.])
-    corner = origin
+    corner = np.array([-width,0.,0.])
     #plane_growth_vector1 = np.array([ 2.0*np.sqrt(2.0),0.,0.])*r
     #plane_growth_vector2 = np.array([np.sqrt(2.0),np.sqrt(2.0),0.])*r
     
@@ -116,8 +116,9 @@ def main(argv):
 ####################################################################################################    
     
     n_layer = 0
-    while n_layer<1: #max_layer:
+    while n_layer<max_layer:
         y_max = x_max
+        print y_max
         origin = corner
         total_rows = x_max*2-1
         for xx in range(total_rows):
@@ -127,7 +128,7 @@ def main(argv):
                     origin=origin+plane_growth_vector2
                     y_max-=1
                 else:
-                    origin=origin+plane_growth_vector2*np.array([-1,1,1])
+                    origin=origin+(plane_growth_vector2-plane_growth_vector1)
                     y_max+=1
             else:
                 atoms.extend([origin+plane_growth_vector1*k for k in range(y_max-1)])
@@ -135,7 +136,7 @@ def main(argv):
                     origin=origin+plane_growth_vector2
                     y_max-=1
                 else:
-                    origin=origin+plane_growth_vector2*np.array([-1,1,1])
+                    origin=origin+(plane_growth_vector2-plane_growth_vector1)
                     y_max+=1
                 
         x_max-=1
