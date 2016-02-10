@@ -40,6 +40,8 @@ def main(argv):
     r = a/(2.0*np.sqrt(2.0)) # radius of atoms
     
     x_max = int(baseSize/a)+1
+
+    d111 = a/np.sqrt(3)
     
     try:
         opts, args = getopt.getopt(argv,"hb:o:",["base_size=","output_file="])
@@ -72,23 +74,39 @@ def main(argv):
 
     max_layer = x_max
     
+    max_layer_tet = int( baseSize/r)
+    height = (max_layer_tet-1)* d111 #2 * r
+    width  = (max_layer_tet-1)*2*r
+
+    height2 = width *np.sqrt(6.)/3.
+
+    print height2, height
+
 ####################################################################################################
 # 
 # Change origin, corner, and growth vectors below
 # 
 ####################################################################################################
     # change origin, plane_growth_vector1, plane_growth_vector2
-    origin = np.array([0.,0.,0.])
+    origin = np.array([-width,0.,0.])
     corner = origin
-    plane_growth_vector1 = np.array([2.0*np.sqrt(2.0),0.,0.])*r
-    plane_growth_vector2 = np.array([np.sqrt(2.0),np.sqrt(2.0),0.])*r
+    #plane_growth_vector1 = np.array([ 2.0*np.sqrt(2.0),0.,0.])*r
+    #plane_growth_vector2 = np.array([np.sqrt(2.0),np.sqrt(2.0),0.])*r
     
-    #this vector should be (plane_growth_vector1+0.5*plane_growth_vector2)+[0,0,sqrt(2)]*r. Check this!
-#     layer_growth_vector1 = np.array([2.0*np.sqrt(2.0),np.sqrt(2.0),np.sqrt(2.0)])*r
+    plane_growth_vector1 = np.array( [width/2., width/2./np.sqrt(3.), height]  )
+    plane_growth_vector1 = plane_growth_vector1* ( a/np.linalg.norm( plane_growth_vector1)  )
+    
+    plane_growth_vector2 = np.array( [ width, -width/np.sqrt(3.), height  ] ) 
+    plane_growth_vector2 = plane_growth_vector2 * (a/np.sqrt(2.)) / np.linalg.norm( plane_growth_vector2)  
+
+    print (180 /np.pi)* np.arccos( np.dot( plane_growth_vector1/ np.linalg.norm( plane_growth_vector1), 
+                            plane_growth_vector2/ np.linalg.norm( plane_growth_vector2)  ) )
+       #his vector should be (plane_growth_vector1+0.5*plane_growth_vector2)+[0,0,sqrt(2)]*r. Check this!
+#   layer_growth_vector1 = np.array([2.0*np.sqrt(2.0),np.sqrt(2.0),np.sqrt(2.0)])*r
     layer_growth_vector1 = (plane_growth_vector1+plane_growth_vector2*2.0)*0.5+[0,0,np.sqrt(2)]*r
     
     #this vector should be [lane_gorwth_vector2*0.5+[0,0,sqrt(2)]*r. Check this!
-#     layer_growth_vector2 = np.array([0.,np.sqrt(2.0),np.sqrt(2.0)])*r
+#   layer_growth_vector2 = np.array([0.,np.sqrt(2.0),np.sqrt(2.0)])*r
     layer_growth_vector2 = plane_growth_vector2-0.5*plane_growth_vector1+[0,0,np.sqrt(2)]*r
     
 ####################################################################################################
@@ -98,7 +116,7 @@ def main(argv):
 ####################################################################################################    
     
     n_layer = 0
-    while n_layer<max_layer:
+    while n_layer<1: #max_layer:
         y_max = x_max
         origin = corner
         total_rows = x_max*2-1
