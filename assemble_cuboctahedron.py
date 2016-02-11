@@ -2,31 +2,27 @@ from numpy import *
 
 from tetrahedron import make_tetrahedron
 from pyramid import make_pyramid
-#import NPbuilder_helper as helper
-
-#remove_overlapping = helper.remove_overlapping
-#mirrorZ_rotateZ = helper.mirrorZ_roateZ
 
 from NPbuilder_helper import remove_overlapping, mirrorZ_rotateZ
 
 atoms= []
 
-origin = np.zeros(3)
-length=20
+origin = zeros(3)
+length=10
 
 # 1st tetrahedron 1
-u = np.array( [-.5, sqrt(3)/2., 0] ) 
-v = np.array( [-1.,0,0 ])
+u = array( [-.5, sqrt(3)/2., 0] ) 
+v = array( [-1.,0,0 ])
 atoms.extend( make_tetrahedron(u, v, origin, length) )
 
 #2nd tetrahedron 2
-u = np.array( [-.5, -sqrt(3)/2., 0] )       
-v = np.array( [.5,-sqrt(3)/2.,0 ])
+u = array( [-.5, -sqrt(3)/2., 0] )       
+v = array( [.5,-sqrt(3)/2.,0 ])
 atoms.extend( make_tetrahedron(u, v, origin, length) )
 
 #3rd for tetrahedron 3
-u = np.array( [1,0,0 ])
-v = np.array( [.5, np.sqrt(3)/2., 0] )       
+u = array( [1,0,0 ])
+v = array( [.5, sqrt(3)/2., 0] )       
 atoms.extend( make_tetrahedron(u, v, origin, length) )
 
 # 4th tetrahedron (the one on the top)
@@ -61,6 +57,6 @@ atoms = remove_overlapping( atoms)
 #    awww its so cute  ^.^
 atoms_txt = [ 'Au ' + ' '.join(map(str,a)) 
                     for a in atoms]
-np.savetxt('cuboctahedron.xyz', atoms_txt, fmt='%s')
+savetxt('cuboctahedron_10.xyz', atoms_txt, fmt='%s')
 
 #dermen
