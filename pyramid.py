@@ -3,7 +3,7 @@ from itertools import cycle
 # makes pyramid with tip at 0,0,0
 # and with the base as the x-y plane
 
-def make_pyramid( u, v, outfilename, length=6, 
+def make_pyramid( u, v, length, outfilename=None, 
                     a=4.076, atomname='Au'):
     """
     Builds a square-base pyramid with top 
@@ -16,6 +16,8 @@ def make_pyramid( u, v, outfilename, length=6,
 
     saves coordinates in .xyz format
     """
+    print "Saving results to %s."%outfilename
+    
     planar_spacing = a/2.
 #   size of the thing
     ndim = 2*length -1
@@ -93,12 +95,17 @@ def make_pyramid( u, v, outfilename, length=6,
         atoms.extend( xyz+stack_vec)
 
 #   convert to string output and save
-    atoms_txt = [ '%s '%atomname + ' '.join(map(str,a)) 
-                for a in atoms]
-    savetxt(outfilename, atoms_txt, fmt='%s')
+    if outfilename is not None:
+        atoms_txt = [ '%s '%atomname + ' '.join(map(str,a)) 
+                    for a in atoms]
+        savetxt(outfilename, atoms_txt, fmt='%s')
+    
+    return atoms
+
 
 if __name__ == "__main__":
     u = [ .5, -.5*sqrt(3), 0 ]
     v = [ .5, .5/sqrt(3), sqrt(6)/3. ] 
-    fname = 'atoms_1.xyz'
-    make_pyramid(u,v, fname)
+    fname = 'pyramid_1.xyz'
+    length=25
+    make_pyramid(u,v,length,outfilename=fname)

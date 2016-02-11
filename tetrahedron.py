@@ -10,9 +10,9 @@
 import numpy as np
 import os
 
-def build_tetrahedron(u, v, origin, length, outfilename,
+def make_tetrahedron(u, v, origin, length, outfilename=None,
                     a=4.076, atomname='Au'):
-    
+
     #while os.path.exists(outfilename):
     #    ask_for_file= "will not overwrite previous results.\
     #                    \nEnter new output file name: "
@@ -25,7 +25,6 @@ def build_tetrahedron(u, v, origin, length, outfilename,
 #   distance between atoms from unit cell length
     r = a/np.sqrt(2)
 
-#   plane extent vector
     print "Saving results to %s."%outfilename
     
 #   vector voodoo magic!    
@@ -47,29 +46,21 @@ def build_tetrahedron(u, v, origin, length, outfilename,
             atoms.extend( atom_line )
         
 #   convert to string output and save
-    atoms_txt = [ '%s '%atomname + ' '.join(map(str,a)) 
-                for a in atoms]
-    np.savetxt(outfilename, atoms_txt, fmt='%s')
+    if outfilename is not None:
+        atoms_txt = [ '%s '%atomname + ' '.join(map(str,a)) 
+                    for a in atoms]
+        np.savetxt(outfilename, atoms_txt, fmt='%s')
+    
+    return atoms
 
 if __name__ == "__main__":
     origin = np.zeros(3)
     length=25
-    fname = 'tetra1_test.xyz'
+    fname = 'tetra1_.xyz'
     u = np.array( [-.5, np.sqrt(3)/2., 0] )       
     v = np.array( [-1.,0,0 ])
 
-    #u = np.array( [.5, np.sqrt(3)/2., 0] )       
-    #v = np.array( [1.,0,0 ])
-
-    #u = np.array( [-.5,-np.sqrt(3)/2.,0 ])
-    #v = np.array( [.5, -np.sqrt(3)/2., 0] )       
-
-    # for top tetra
-    #corner = np.array( [width/2., width/2./np.sqrt(3.), height] ) 
-    #V = np.array([-1.,0,0])
-    #U = np.array([-.5, -np.sqrt(3)/2.,0]) # growth vector
-
-    build_tetrahedron(u, v, origin, length, fname) 
+    build_tetrahedron(u, v, origin, length, outfilename=fname) 
     
 
 
